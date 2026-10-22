@@ -1,0 +1,35 @@
+name: Kurulum ve APK
+on: push
+permissions:
+  contents: write
+jobs:
+  derle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zip'i ac
+        id: z
+        run: |
+          f=$(find . -maxdepth 1 -name "*.zip" | head -1)
+          if [ -z "$f" ]; then echo "yok=1" >> $GITHUB_OUTPUT; exit 0; fi
+          unzip -q "$f" -d /tmp/z
+          echo "dir=$(dirname "$(find /tmp/z -name settings.gradle.kts | head -1)")" >> $GITHUB_OUTPUT
+      - if: steps.z.outputs.yok != '1'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - if: steps.z.outputs.yok != '1'
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - if: steps.z.outputs.yok != '1'
+        working-directory: ${{ steps.z.outputs.dir }}
+        run: |
+          gradle --no-daemon assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk $GITHUB_WORKSPACE/B737-Calisma.apk
+      - if: steps.z.outputs.yok != '1'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          files: B737-Calisma.apk
