@@ -8,11 +8,6 @@ It started as a simple notes-and-quiz app and slowly grew into an interactive 3D
 
 > ⚠️ This is a student project for learning only. It is not an official manual and must not be used for real aircraft maintenance.
 
-## Screenshots
-
-| Aircraft | Cockpit | Throttle |
-|---|---|---|
-| ![Aircraft](docs/screenshots/aircraft.jpg) | ![Cockpit](docs/screenshots/cockpit.jpg) | ![Throttle](docs/screenshots/throttle.jpg) |
 
 ## What's inside
 
